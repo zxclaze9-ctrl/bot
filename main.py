@@ -5,8 +5,9 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
 from aiogram.filters import CommandStart
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+import os
 
-TOKEN = "8876570486:AAGC3HPJh1EcAZfyKZDtkRVdY_S5ZvUOEKY"
+TOKEN = os.getenv("BOT_TOKEN", "8876570486:AAGC3HPJh1EcAZfyKZDtkRVdY_S5ZvUOEKY")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -124,9 +125,11 @@ async def fact(message: Message):
 
 @dp.message(F.text == "⏰ Soat")
 async def clock(message: Message):
-    from datetime import datetime
+    from datetime import datetime, timezone, timedelta
 
-    now = datetime.now().strftime("%H:%M:%S")
+    # Railway UTCda ishlaydi, O'zbekiston esa UTC+5 da
+    tz = timezone(timedelta(hours=5))
+    now = datetime.now(tz).strftime("%H:%M:%S")
     await message.answer(f"Hozirgi vaqt: {now}")
 
 @dp.message(F.text == "⬅️ Orqaga")
